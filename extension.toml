@@ -3,7 +3,7 @@ name = "Dockerfile Linter"
 description = "Hadolint-powered Dockerfile linting."
 version = "0.1.0"
 schema_version = 1
-authors = ["Abderrahim Ghazali <abderrahim.ghazali@dropteam.fr>"]
+authors = ["Abderrahim Ghazali <ghazali.abderrahim1@gmail.com>"]
 repository = "https://github.com/abderrahimghazali/zed-dockerfile-linter"
 
 [language_servers.hadolint-lsp]
