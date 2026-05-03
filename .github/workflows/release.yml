@@ -1,0 +1,61 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: aarch64-apple-darwin
+            os: macos-14
+            asset: hadolint-lsp-darwin-aarch64.tar.gz
+            archive: tar
+          - target: x86_64-apple-darwin
+            os: macos-13
+            asset: hadolint-lsp-darwin-x86_64.tar.gz
+            archive: tar
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            asset: hadolint-lsp-linux-x86_64.tar.gz
+            archive: tar
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-24.04-arm
+            asset: hadolint-lsp-linux-aarch64.tar.gz
+            archive: tar
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            asset: hadolint-lsp-windows-x86_64.zip
+            archive: zip
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: build
+        working-directory: lsp
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: package (tar)
+        if: matrix.archive == 'tar'
+        run: tar -C lsp/target/${{ matrix.target }}/release -czf ${{ matrix.asset }} hadolint-lsp
+
+      - name: package (zip)
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: Compress-Archive -Path lsp/target/${{ matrix.target }}/release/hadolint-lsp.exe -DestinationPath ${{ matrix.asset }}
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.asset }}
