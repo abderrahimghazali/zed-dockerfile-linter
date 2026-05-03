@@ -21,7 +21,7 @@ jobs:
             asset: hadolint-lsp-darwin-aarch64.tar.gz
             archive: tar
           - target: x86_64-apple-darwin
-            os: macos-13
+            os: macos-14
             asset: hadolint-lsp-darwin-x86_64.tar.gz
             archive: tar
           - target: x86_64-unknown-linux-gnu
