@@ -9,7 +9,7 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
 
-const HADOLINT_VERSION: &str = "2.12.0";
+const HADOLINT_VERSION: &str = "2.14.0";
 
 #[derive(Deserialize)]
 struct HadolintIssue {
@@ -94,10 +94,11 @@ async fn resolve_hadolint(client: &Client) -> std::result::Result<PathBuf, Strin
 
 async fn download_hadolint(dir: &Path) -> std::result::Result<(), String> {
     let asset = match (std::env::consts::OS, std::env::consts::ARCH) {
-        ("macos", _) => "hadolint-Darwin-x86_64",
-        ("linux", "x86_64") => "hadolint-Linux-x86_64",
-        ("linux", "aarch64") => "hadolint-Linux-arm64",
-        ("windows", _) => "hadolint-Windows-x86_64.exe",
+        ("macos", "aarch64") => "hadolint-macos-arm64",
+        ("macos", _) => "hadolint-macos-x86_64",
+        ("linux", "x86_64") => "hadolint-linux-x86_64",
+        ("linux", "aarch64") => "hadolint-linux-arm64",
+        ("windows", _) => "hadolint-windows-x86_64.exe",
         (os, arch) => return Err(format!("no upstream hadolint binary for {os}/{arch}")),
     };
     let url = format!(

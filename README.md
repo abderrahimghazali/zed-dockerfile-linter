@@ -22,8 +22,6 @@ On first lint, `hadolint-lsp` looks for the binary in this order:
 
 `<cache>` is `~/Library/Caches` on macOS, `~/.cache` on Linux, `%LOCALAPPDATA%` on Windows. The pinned version is set in `lsp/src/main.rs`.
 
-macOS arm64 note: hadolint does not publish a native arm64 build, so the auto-downloader fetches the x86_64 binary and relies on Rosetta. If you'd rather have a native build, `brew install hadolint` produces one and `PATH` lookup picks it up first.
-
 ## Releasing
 
 Tag a release with prebuilt `hadolint-lsp` binaries attached as assets named:
