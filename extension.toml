@@ -1,5 +1,5 @@
-id = "dockerfile-linter"
-name = "Dockerfile Linter"
+id = "hadolint"
+name = "Hadolint"
 description = "Hadolint-powered Dockerfile linting."
 version = "0.1.0"
 schema_version = 1
